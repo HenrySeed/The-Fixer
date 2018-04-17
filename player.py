@@ -6,22 +6,29 @@ from projectile import *
 
 
 class Player():
-    def __init__(self, eengine):
+    def __init__(self, engine):
         self.pos = [0,0]
 
-        self.engine = eengine
+        self.engine = engine
 
-        self.movementSpeed = 5
+        self.movementSpeed = 4
         self.look_angle = 0
 
         self.image = pygame.image.load(os.path.join('player.gif'))
         self.image = pygame.transform.scale(self.image, (90, 90))
 
+        self.has_sight = True
+
 
     def render(self, screen):
 
-        x = int(self.engine.screen_width / 2)
-        y = int(self.engine.screen_height / 2)
+        # Render Sight as green line
+        if self.has_sight:
+            x_dist = math.sin(self.look_angle) * 1000
+            y_dist = math.sqrt(1000 ** 2 + x_dist ** 2)
+            
+            pygame.draw.line(screen, (0,100,0), self.pos, (self.engine.cursor_x, self.engine.cursor_y), 1)
+
         
         textsurface = self.engine.myfont.render(str(self.look_angle), False, (255, 255, 255))
         screen.blit(textsurface,(10,10))
@@ -53,9 +60,7 @@ class Player():
         #draw rotatedSurf with the corrected rect so it gets put in the proper spot
         screen.blit(rotatedSurf, rotRect)
 
-        for col in range(0, 10):
-            for row in range(0, 10):
-                engine_draw(screen, [int(self.engine.cursor_x+col/2), int(self.engine.cursor_y+row/2)], (255, 255, 255))
+        pygame.draw.circle(screen, (255, 255, 255), (self.engine.cursor_x, self.engine.cursor_y), 2)
 
 
 
