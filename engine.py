@@ -100,6 +100,7 @@ class rect_128():
         # List of pixel coords to be drawn in window
         self.coords = []
         self.visible = True
+        self.background = background
 
         for i in range(x, x+width):
             self.coords.append([i, y])
@@ -111,7 +112,7 @@ class rect_128():
 
     def render(self, screen):
         for (x, y) in self.coords:
-            engine_draw(screen, [x, y], background)
+            engine_draw(screen, [x, y], self.background)
 
 
 class sprite_128():
