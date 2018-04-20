@@ -13,7 +13,7 @@ player = Player(engine)
 level1 = Level(player, engine, (100, 100))
 
 
-engine.addObject(level1)
+engine.level = level1
 engine.addObject(player)
 
 

@@ -1,19 +1,31 @@
 import math
 import pygame
+import engine
 
 
 
 class Projectile():
-    def __init__(self, angle, start):
+    def __init__(self, start, cursor, angle):
         self.start = [start[0], start[1]]
+        self.cursorPos = cursor
+
         self.angle = angle
-        self.dist = 0
+        self.progress = 1                       # progress of the bullet towards its trajectory
+        self.speed = 40                         # speed of the projectile
 
         self.color = (255, 255, 255)
+        self.bullet_length = 6
 
-    def render(self, screen):
-        x_dist = math.sin(self.angle)*self.dist
-        y_dist = math.sqrt(self.dist**2 + x_dist**2)
+        self.end = engine.getPoint(start, angle, 1000)
 
-        # pygame.draw.line(screen, self.color, self.start, (self.start[0] + x_dist, self.start[1] + y_dist))
-        pygame.draw.line(screen, self.color, (100, 100), (self.start[0] - 10, self.start[1] - 10), 1)
+
+    def update(self):
+        self.progress += self.speed
+
+
+    def render(self, screen):    
+
+        bullet_start = engine.getPoint(self.start, self.angle, self.progress)
+        bullet_end = engine.getPoint(self.start, self.angle, self.progress + self.bullet_length)
+
+        pygame.draw.line(screen, self.color, bullet_start, bullet_end, 3)

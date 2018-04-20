@@ -17,7 +17,7 @@ class Player():
         self.image = pygame.image.load(os.path.join('player.gif'))
         self.image = pygame.transform.scale(self.image, (90, 90))
 
-        self.has_sight = True
+        self.has_sight = False
 
 
     def render(self, screen):
@@ -63,6 +63,12 @@ class Player():
         pygame.draw.circle(screen, (255, 255, 255), (self.engine.cursor_x, self.engine.cursor_y), 2)
 
 
+    def shoot(self):
+
+        bullet = Projectile(self.pos, (self.engine.cursor_x, self.engine.cursor_y), self.look_angle)
+        self.engine.level.addObject(bullet)
+
+
 
 
     def update(self, events):
@@ -74,6 +80,10 @@ class Player():
         self.look_angle = degrees(atan2(self.engine.cursor_y - y, self.engine.cursor_x - x))
 
         # self.image = pygame.transform.rotate(self.image, 30)
+
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.shoot()
 
         keys = pygame.key.get_pressed()
         x_change = 0
